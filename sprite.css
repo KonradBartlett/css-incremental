@@ -1,0 +1,62 @@
+[data-sprite-sheet='skeleton-walk'] {
+	background-image: url('public/lpc-walk.png');
+	--frame-size: var(--cell-size);
+	--animation-frames: 1;
+	--animation-offset-x: 0;
+
+	&[data-animation-name*='up'] {
+		--animation-row: 1;
+	}
+	&[data-animation-name*='left'] {
+		--animation-row: 2;
+	}
+	&[data-animation-name*='down'] {
+		--animation-row: 3;
+	}
+	&[data-animation-name*='right'] {
+		--animation-row: 4;
+	}
+	&[data-animation-name*='walk'] {
+		--animation-frames: 8;
+		--animation-offset-x: 1;
+	}
+	&[data-animation-state*='idle'] {
+		--animation-frames: 1;
+		--animation-offset-x: 0;
+	}
+}
+
+.sprite {
+	position: absolute;
+
+	width: 1000px;
+	height: 1000px;
+	width: var(--frame-size);
+	height: var(--frame-size);
+
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-size: auto auto;
+
+	animation-name: pan-sprite;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-fill-mode: forwards;
+	animation-duration: 1s;
+	animation-timing-function: steps(var(--animation-frames));
+}
+
+@keyframes pan-sprite {
+	0% {
+		background-position: calc(-1 * var(--frame-size) * var(--animation-offset-x))
+			calc(-1 * (var(--animation-row) * var(--frame-size) - var(--frame-size)));
+	}
+
+	100% {
+		background-position: calc(
+				(-1 * var(--frame-size) * (var(--animation-frames))) +
+					(-1 * var(--frame-size) * var(--animation-offset-x))
+			)
+			calc(-1 * (var(--animation-row) * var(--frame-size) - var(--frame-size)));
+	}
+}

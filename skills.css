@@ -1,0 +1,181 @@
+.sidebar {
+	position: fixed;
+	inset: 0;
+	margin: calc(var(--cell-size) * 0.25);
+	background-color: rgb(0 0 0 / 0.8);
+	width: calc(var(--sidebar-width) - calc(var(--cell-size) * 0.5));
+	padding: calc(var(--cell-size) * 0.25);
+	z-index: 1;
+
+	overflow: hidden visible;
+
+	color: white;
+}
+
+#skills {
+	isolation: isolate;
+	position: relative;
+	grid-template-columns: repeat(var(--skill-columns), var(--cell-size));
+
+	.cell {
+		color: transparent;
+		border: none;
+		outline: rgba(164, 165, 162, 0.03) 2px dashed;
+		z-index: -1;
+
+		pointer-events: none;
+	}
+
+	.skill-subgrid {
+		display: none;
+		grid-template-columns: subgrid;
+		grid-template-rows: subgrid;
+		grid-column: 1/6;
+		grid-row: 1/10;
+
+		&:has(input:checked) > .skill-subgrid {
+			/* background-color: pink; */
+			display: grid;
+		}
+	}
+	.skill-cell {
+		--skill-cost: calc(attr(data-skill-cost number, 0));
+		--skill-available: calc(clamp(0, (var(--gold-total) - var(--skill-cost)) * 1e18, 1));
+
+		cursor: url('/public/cursor/pointer.png'), auto;
+		--skill-row: calc(attr(data-skill-row number, 0));
+		--skill-col: calc(attr(data-skill-col number, 0));
+		grid-row: calc(var(--skill-row) + 1);
+		grid-column: calc(var(--skill-col) + 1);
+
+		color: transparent;
+
+		--icon-hue: 0;
+		--icon-sepia: 0;
+		--icon-invert: 0;
+		--icon-brightness: calc((var(--skill-available) * 60%) + 30%);
+		--icon-saturate: 0;
+		filter: invert(var(--icon-invert)) sepia(var(--icon-sepia))
+			hue-rotate(var(--icon-hue)) brightness(var(--icon-brightness))
+			saturate(var(--icon-saturate));
+
+		margin: 2px;
+
+		transition: 0.1s ease-out;
+
+		pointer-events: none;
+		.skill-block {
+			position: absolute;
+			inset: 0;
+
+			pointer-events: all;
+			cursor: url('/public/cursor/not-allowed.png'), auto;
+
+			&:active {
+				pointer-events: none;
+			}
+
+			&::after {
+				content: 'hi';
+				position: absolute;
+				/* background-color: pink; */
+				/* z-index: 2; */
+				inset: 0;
+				pointer-events: all;
+				width: calc(var(--skill-available) * 100%);
+				cursor: url('/public/cursor/pointer.png'), auto;
+			}
+		}
+		input {
+			display: none;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+			padding: 25%;
+
+			pointer-events: none;
+			user-select: none;
+			background-image: url('/public/borders/border-00.png');
+			background-size: 100% 100%;
+		}
+
+		&:hover {
+			scale: 1.03;
+		}
+		&:active {
+			cursor: url('/public/cursor/active.png'), auto;
+		}
+
+		&:has(> input:checked) {
+			--icon-hue: 69deg;
+			--icon-sepia: 69%;
+			--icon-invert: 0.69;
+			--icon-saturate: 420%;
+			--icon-brightness: 1;
+			--skill-available: 0;
+
+			/* pointer-events: none; */
+			cursor: url('/public/cursor/magnifier.png'), auto;
+
+			&:active {
+				pointer-events: none;
+			}
+		}
+
+		--child-top: 0;
+		--child-bottom: 0;
+		&[data-children*='up'] {
+			--child-top: 1;
+		}
+		&[data-children*='down'] {
+			--child-bottom: 1;
+		}
+
+		--child-left: 0;
+		--child-right: 0;
+		&[data-children*='left'] {
+			--child-left: 1;
+		}
+		&[data-children*='right'] {
+			--child-right: 1;
+		}
+
+		&::before {
+			content: '';
+			border-radius: 1000px;
+			position: absolute;
+			z-index: -1;
+			inset: 50%;
+			pointer-events: none;
+
+			translate: calc(
+					((0.5 * var(--child-right)) - (0.5 * var(--child-left)) - 0.5) * 100%
+				) -50%;
+
+			width: calc(0% + (var(--child-left) + var(--child-right)) * var(--cell-size));
+			height: 2px;
+
+			background-color: black;
+		}
+		&::after {
+			content: '';
+			border-radius: 1000px;
+			position: absolute;
+			z-index: -1;
+			inset: 50%;
+			pointer-events: none;
+
+			translate: -50%
+				calc(((0.5 * var(--child-bottom)) - (0.5 * var(--child-top)) - 0.5) * 100%);
+
+			width: 2px;
+			height: calc(0% + (var(--child-top) + var(--child-bottom)) * var(--cell-size));
+
+			background-color: black;
+		}
+	}
+	> .skill-subgrid {
+		display: grid;
+	}
+}

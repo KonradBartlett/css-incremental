@@ -1,0 +1,49 @@
+.game {
+	isolation: isolate;
+
+	position: relative;
+	/* justify-self: end; */
+
+	#gameboard {
+		position: relative;
+
+		width: 100vw;
+		height: 100vh;
+
+		overflow: scroll;
+		scroll-snap-type: both mandatory;
+		scroll-padding-left: var(--sidebar-width);
+		padding-inline-start: var(--sidebar-width);
+		background-color: lightgray;
+		/* margin-inline-start: calc(var(--cell-size) * (var(--skill-columns) + 0.5)); */
+
+		.cell {
+			scroll-snap-align: start;
+
+			background-color: #20aa1333;
+			cursor: pointer;
+
+			&:hover {
+				background-color: #20aa13aa;
+			}
+		}
+	}
+}
+
+#character-list {
+	position: absolute;
+	/* inset: var(--sidebar-width); */
+	left: var(--sidebar-width);
+
+	.character {
+		/* transform: translate(var(--sidebar-width), var(--sidebar-width)); */
+	}
+
+	#character-1 {
+		transition: top calc((attr(data-movement-duration number, 1)) * 1s) linear,
+			left calc((attr(data-movement-duration number, 1)) * 1s) linear;
+
+		top: calc(var(--cell-size) * attr(data-grid-y number, 0));
+		left: calc(var(--cell-size) * attr(data-grid-x number, 0));
+	}
+}
