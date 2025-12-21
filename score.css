@@ -1,0 +1,8 @@
+#resources {
+	[for='gold'] {
+		&::after {
+			counter-reset: gold-count var(--gold-total);
+			content: counter(gold-count);
+		}
+	}
+}

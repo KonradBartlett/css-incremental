@@ -1,0 +1,63 @@
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	--transition-duration: 0s;
+
+	--cell-size: 64px;
+	--columns: 16;
+}
+body {
+	margin: 0;
+	overflow: clip;
+
+	/* overflow-x: clip; */
+}
+button {
+	all: unset;
+}
+
+* {
+	cursor: url('/public/cursor/cursor.png'), auto;
+}
+
+.app {
+	--gold-total: calc(attr(data-gold number, 0));
+
+	/* display: flex; */
+	background-color: black;
+
+	--sidebar-width: calc(var(--cell-size) * (var(--skill-columns) + 1));
+	/* display: grid;
+	grid-template-columns:
+		calc(var(--sidebar-width) + var(--cell-size) * 0.5)
+		auto; */
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(var(--columns), var(--cell-size));
+		width: 100%;
+
+		.cell {
+			border: 1px dashed rgba(0, 0, 255, 0.125);
+			aspect-ratio: 1 / 1;
+		}
+	}
+
+	cursor: url('public/cursor/cursor.png'), auto;
+}
+
+.highlighted {
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		outline: 3px solid red;
+	}
+}

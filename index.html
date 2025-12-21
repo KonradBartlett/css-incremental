@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I want to show you my god</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tooltip.css">
+    <link rel="stylesheet" href="sprite.css">
+    <link rel="stylesheet" href="skills.css">
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="score.css">
+</head>
+
+<body>
+    <div id="app" class="app" data-gold="0">
+        <div id="default-anchor"></div>
+        <div class="sidebar">
+            <h2 class="">Resources</h2>
+            <div id="resources">
+                <label for="gold">
+                    Gold:
+                </label>
+                <br /><input id="gold" type="number" step="1" min="0" value="0" />
+            </div>
+            <h2>Skills</h2>
+            <div id="skills" class="grid"></div>
+        </div>
+        <div class="game">
+            <div id="gameboard" class="grid ">
+                <div id="character-list" class="">
+                    <div id="character-1" class="character sprite" data-grid-y="5" data-grid-x="5" data-move-speed="1"
+                        data-animation-state="idle" data-animation-name="walk-right" data-sprite-sheet="skeleton-walk">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tooltip">
+        </div>
+    </div>
+    <script src="animation.js"></script>
+    <script src="game.js" preload></script>
+    <script src="skills.js" preload></script>
+    <script src="character.js" preload></script>
+    <script src="score.js" preload></script>
+
+</body>
+
+</html>

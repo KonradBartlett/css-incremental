@@ -1,0 +1,48 @@
+#tooltip {
+	position: fixed;
+	position-anchor: --anchor;
+	position-area: top;
+	position-try: top, bottom, right, left;
+	pointer-events: none;
+	z-index: 1;
+	opacity: 0;
+
+	border: 1px solid;
+	border-image-source: url('/public/borders/border-tooltip.png');
+	border-image-slice: 23 fill;
+	border-image-width: 23;
+
+	font-size: 0.6rem;
+
+	width: max-content;
+	max-width: 42ch;
+	padding: 23px;
+	box-sizing: initial;
+
+	&::after {
+		content: 'howdy';
+		width: 100%;
+		display: inline-block;
+	}
+}
+
+#default-anchor {
+	anchor-name: --anchor;
+	position: absolute;
+	inset: 100% 50%;
+	opacity: 0;
+}
+.info:hover {
+	anchor-name: --anchor;
+
+	/* --tooltip-text: attr(data-tooltip, ''); */
+}
+#app:has(.info:hover) {
+	/* opacity: 0.3; */
+	--tooltip-text: var(--skill-columns);
+
+	#tooltip {
+		opacity: 1 !important;
+		transition: opacity 0.3s ease-out;
+	}
+}
