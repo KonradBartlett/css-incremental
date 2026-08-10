@@ -1,0 +1,7 @@
+{
+  "name": "wfc-js",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Wave Function Collapse in native Javascript",
+  "main": "wfc.js"
+}
