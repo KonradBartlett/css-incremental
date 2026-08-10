@@ -1,0 +1,209 @@
+/* ── Terrain tiles ─────────────────────────────────────────────
+   terrain-short.png is a 32px-tile sheet (1024x2048 = 32x64 tiles).
+   We upscale 2x so one source tile fills one 64px world cell.
+   data-frame-x / data-frame-y address tiles on the 32px grid. */
+
+[data-sprite-sheet='overworld'] {
+	background-image: url('../public/tiles/terrain-short.png');
+	background-size: 2048px 4096px;
+	background-repeat: no-repeat;
+	background-position: calc(attr(data-frame-x number, 0) * -64px)
+		calc(attr(data-frame-y number, 0) * -64px);
+	image-rendering: pixelated;
+}
+
+/* Boundary cells layer a transparent edge blob (first = on top) over the
+   lower terrain's solid tile, so biomes feather into each other. */
+[data-sprite-sheet='overworld'][data-overlay-x] {
+	background-image: url('../public/tiles/terrain-short.png'),
+		url('../public/tiles/terrain-short.png');
+	background-position:
+		calc(attr(data-overlay-x number, 0) * -64px) calc(attr(data-overlay-y number, 0) * -64px),
+		calc(attr(data-frame-x number, 0) * -64px) calc(attr(data-frame-y number, 0) * -64px);
+}
+
+/* ── Characters ──────────────────────────────────────────────── */
+
+[data-sprite-sheet='slime'] {
+	background-image: url('../public/character/slime-walk.png');
+	--frame-size: var(--cell-size);
+	--animation-frames: 1;
+	--animation-col: 0;
+
+	&[data-animation-name*='up'] {
+		--animation-row: 1;
+	}
+	&[data-animation-name*='left'] {
+		--animation-row: 2;
+	}
+	&[data-animation-name*='down'] {
+		--animation-row: 3;
+	}
+	&[data-animation-name*='right'] {
+		--animation-row: 4;
+	}
+	&[data-animation-name*='walk'] {
+		--animation-frames: 8;
+		--animation-col: 0;
+	}
+	&[data-animation-state*='idle'] {
+		background-image: url('../public/character/slime-idle.png');
+		--animation-frames: 6;
+		--animation-col: 0;
+		animation-duration: 1.6s;
+	}
+}
+
+[data-sprite-sheet='skeleton'] {
+	background-image: url('../public/character/skeleton-walk.png');
+	--frame-size: var(--cell-size);
+	--animation-frames: 1;
+	--animation-col: 0;
+
+	&[data-animation-name*='up'] {
+		--animation-row: 1;
+	}
+	&[data-animation-name*='left'] {
+		--animation-row: 2;
+	}
+	&[data-animation-name*='down'] {
+		--animation-row: 3;
+	}
+	&[data-animation-name*='right'] {
+		--animation-row: 4;
+	}
+	&[data-animation-name*='walk'] {
+		--animation-frames: 8;
+		--animation-col: 1;
+	}
+	&[data-animation-state*='idle'] {
+		--animation-frames: 1;
+		--animation-col: 0;
+	}
+}
+
+[data-sprite-sheet='human'] {
+	/* Gear sheets (composed at runtime from owned skills) sandwich the base
+	   body: front gear on top, capes/wings underneath. All three share the
+	   832x3456 layout, so one background-position pans the stack in sync. */
+	background-image: var(--gear-sheet, none), url('../public/character/human-walk.png'),
+		var(--gear-behind-sheet, none);
+	--frame-size: var(--cell-size);
+	--animation-frames: 1;
+	--animation-col: 0;
+
+	&[data-animation-name*='up'] {
+		--animation-row: calc(var(--animation-row-offset) + 1);
+	}
+	&[data-animation-name*='left'] {
+		--animation-row: calc(var(--animation-row-offset) + 2);
+	}
+	&[data-animation-name*='down'] {
+		--animation-row: calc(var(--animation-row-offset) + 3);
+	}
+	&[data-animation-name*='right'] {
+		--animation-row: calc(var(--animation-row-offset) + 4);
+	}
+	&[data-animation-name*='spellcast'] {
+		--animation-frames: 7;
+		--animation-row-offset: 0;
+	}
+	&[data-animation-name*='thrust'] {
+		--animation-frames: 8;
+		--animation-row-offset: 4;
+	}
+	&[data-animation-name*='walk'] {
+		--animation-frames: 9;
+		--animation-row-offset: 8;
+	}
+	&[data-animation-name*='slash'] {
+		--animation-frames: 6;
+		--animation-row-offset: 12;
+		animation-duration: 0.4s;
+	}
+	&[data-animation-name*='shoot'] {
+		--animation-frames: 13;
+		--animation-row-offset: 16;
+	}
+	&[data-animation-name*='hurt'] {
+		--animation-frames: 6;
+		--animation-row: 21;
+	}
+	&[data-animation-name*='run'] {
+		--animation-frames: 8;
+		--animation-row-offset: 38;
+	}
+	/* Idle = walk row frame 0 (standing pose). Gear items lack the expanded
+	   idle rows, so the breathing idle would strip the hero's equipment. */
+	&[data-animation-name*='idle'],
+	&[data-animation-state='idle'] {
+		--animation-frames: 1;
+		--animation-row-offset: 8;
+		--animation-col: 0;
+	}
+}
+
+/* Composed at runtime from the LPC zombie body (universal sheet layout). */
+[data-sprite-sheet='zombie'] {
+	background-image: var(--zombie-sheet, none);
+	--frame-size: var(--cell-size);
+	--animation-frames: 1;
+	--animation-col: 0;
+
+	&[data-animation-name*='up'] {
+		--animation-row: calc(var(--animation-row-offset) + 1);
+	}
+	&[data-animation-name*='left'] {
+		--animation-row: calc(var(--animation-row-offset) + 2);
+	}
+	&[data-animation-name*='down'] {
+		--animation-row: calc(var(--animation-row-offset) + 3);
+	}
+	&[data-animation-name*='right'] {
+		--animation-row: calc(var(--animation-row-offset) + 4);
+	}
+	&[data-animation-name*='walk'] {
+		--animation-frames: 9;
+		--animation-row-offset: 8;
+	}
+	&[data-animation-state='idle'] {
+		--animation-frames: 1;
+		--animation-row-offset: 8;
+		--animation-col: 0;
+	}
+}
+
+/* ── Frame animation engine ──────────────────────────────────── */
+
+.sprite {
+	position: absolute;
+	transform-origin: bottom;
+
+	width: var(--frame-size);
+	height: var(--frame-size);
+
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-size: auto auto;
+	image-rendering: pixelated;
+
+	animation-name: pan-sprite;
+	animation-iteration-count: infinite;
+	animation-fill-mode: forwards;
+	animation-duration: 1s;
+	animation-timing-function: steps(var(--animation-frames));
+}
+
+@keyframes pan-sprite {
+	0% {
+		background-position: calc(-1 * var(--frame-size) * var(--animation-col))
+			calc(-1 * (var(--animation-row) * var(--frame-size) - var(--frame-size)));
+	}
+	100% {
+		background-position: calc(
+				(-1 * var(--frame-size) * (var(--animation-frames))) +
+					(-1 * var(--frame-size) * var(--animation-col))
+			)
+			calc(-1 * (var(--animation-row) * var(--frame-size) - var(--frame-size)));
+	}
+}
