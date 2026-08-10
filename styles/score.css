@@ -1,0 +1,128 @@
+#resources,
+#hero-stats {
+	font-size: 0.8rem;
+}
+
+#minimap {
+	display: block;
+	width: 100%;
+	image-rendering: pixelated;
+	border: 2px solid rgb(0 0 0 / 0.4);
+	border-radius: 2px;
+	cursor: url('../public/cursor/pointer.png'), auto;
+}
+
+.resource-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 1px 4px;
+
+	.resource-label {
+		opacity: 0.75;
+	}
+
+	.resource-value {
+		font-weight: bold;
+		color: #8a5a00;
+	}
+}
+
+#hero-stats .resource-value {
+	color: #2e6b1e;
+}
+
+.settings {
+	margin-top: 1em;
+	font-size: 0.75rem;
+	opacity: 0.85;
+
+	summary {
+		cursor: url('../public/cursor/pointer.png'), auto;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+}
+
+.text-button {
+	display: inline-block;
+	margin-top: 0.5em;
+	padding: 2px 6px;
+	border: 1px solid rgb(255 255 255 / 0.3);
+	border-radius: 3px;
+	font-size: 0.75rem;
+	cursor: url('../public/cursor/pointer.png'), auto;
+
+	&:hover {
+		background-color: rgb(255 255 255 / 0.15);
+	}
+}
+
+.hidden {
+	display: none !important;
+}
+
+#quest {
+	font-size: 0.75rem;
+
+	#quest-text {
+		font-weight: bold;
+	}
+
+	#quest-bar {
+		position: relative;
+		height: 12px;
+		margin: 3px 0;
+		border: 1px solid rgb(0 0 0 / 0.4);
+		border-radius: 3px;
+		background: rgb(0 0 0 / 0.25);
+		overflow: hidden;
+	}
+
+	#quest-fill {
+		height: 100%;
+		width: var(--quest-percent, 0%);
+		background: linear-gradient(to bottom, #9be37b, #4d9442);
+		transition: width 0.3s ease;
+	}
+
+	#quest-count {
+		position: absolute;
+		inset: 0;
+		text-align: center;
+		font-size: 0.65rem;
+		line-height: 12px;
+		color: white;
+		text-shadow: 0 1px 1px rgb(0 0 0 / 0.7);
+	}
+
+	#quest-reward {
+		color: #8a5a00;
+	}
+}
+
+.prestige {
+	display: block;
+	width: 100%;
+	margin: 0.5em 0;
+	padding: 6px;
+	text-align: center;
+	font-weight: bold;
+	color: #7a4a00;
+	border: 1px solid #b8862d;
+	background: linear-gradient(rgb(255 215 94 / 0.35), rgb(255 215 94 / 0.15));
+	animation: prestige-glow 2s ease-in-out infinite alternate;
+
+	&:hover {
+		background: linear-gradient(rgb(255 215 94 / 0.55), rgb(255 215 94 / 0.3));
+	}
+}
+
+@keyframes prestige-glow {
+	from {
+		box-shadow: 0 0 2px rgb(255 200 60 / 0.4);
+	}
+	to {
+		box-shadow: 0 0 10px rgb(255 200 60 / 0.8);
+	}
+}

@@ -1,0 +1,47 @@
+#tooltip {
+	position: fixed;
+	position-anchor: --anchor;
+	position-area: right;
+	position-try: right, left, top, bottom;
+	pointer-events: none;
+	z-index: 10;
+	opacity: 0;
+
+	border: 1px solid;
+	border-image-source: url('../public/borders/border-tooltip.png');
+	border-image-slice: 23 fill;
+	border-image-width: 23;
+
+	color: #1a1208;
+	font-size: 0.7rem;
+	line-height: 1.5;
+
+	width: max-content;
+	max-width: 32ch;
+	padding: 14px 18px;
+	box-sizing: initial;
+
+	strong {
+		font-size: 0.8rem;
+	}
+
+	em {
+		color: #7a4a00;
+	}
+}
+
+#default-anchor {
+	anchor-name: --anchor;
+	position: absolute;
+	inset: 100% 50%;
+	opacity: 0;
+}
+
+.info:hover {
+	anchor-name: --anchor;
+}
+
+#app:has(.info:hover) #tooltip {
+	opacity: 1;
+	transition: opacity 0.2s ease-out;
+}

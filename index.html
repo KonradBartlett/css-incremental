@@ -5,46 +5,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I want to show you my god</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="tooltip.css">
-    <link rel="stylesheet" href="sprite.css">
-    <link rel="stylesheet" href="skills.css">
-    <link rel="stylesheet" href="game.css">
-    <link rel="stylesheet" href="score.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/tooltip.css">
+    <link rel="stylesheet" href="/styles/sprite.css">
+    <link rel="stylesheet" href="/styles/skills.css">
+    <link rel="stylesheet" href="/styles/game.css">
+    <link rel="stylesheet" href="/styles/score.css">
+    <link rel="stylesheet" href="/styles/background.css">
 </head>
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+    <filter id="mySVGFilter">
+        <feGaussianBlur stdDeviation="5" result="blur" />
+        <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="gooey" />
+    </filter>
+</svg>
+
 
 <body>
     <div id="app" class="app" data-gold="0">
         <div id="default-anchor"></div>
-        <div class="sidebar">
-            <h2 class="">Resources</h2>
+        <div class="sidebar liquidglass">
+            <h2>World</h2>
+            <canvas id="minimap"></canvas>
+            <h2>Resources</h2>
             <div id="resources">
-                <label for="gold">
-                    Gold:
-                </label>
-                <br /><input id="gold" type="number" step="1" min="0" value="0" />
+                <div class="resource-row"><span class="resource-label">Gold</span><span id="gold-display"
+                        class="resource-value">0</span></div>
+                <div class="resource-row"><span class="resource-label">Slain</span><span id="kills-display"
+                        class="resource-value">0</span></div>
+                <div class="resource-row hidden" id="legend-row"><span class="resource-label">Legend</span><span
+                        id="legend-display" class="resource-value">0</span></div>
+            </div>
+            <button id="prestige" class="text-button prestige hidden">⭐ Begin a New Chapter</button>
+            <h2>Quest</h2>
+            <div id="quest">
+                <div id="quest-text">...</div>
+                <div id="quest-bar">
+                    <div id="quest-fill"></div>
+                    <span id="quest-count"></span>
+                </div>
+                <div id="quest-reward"></div>
+            </div>
+            <h2>Hero</h2>
+            <div id="hero-stats">
+                <div class="resource-row"><span class="resource-label">Damage</span><span id="stat-damage"
+                        class="resource-value">1</span></div>
+                <div class="resource-row"><span class="resource-label">Speed</span><span id="stat-speed"
+                        class="resource-value">2.0 tiles/s</span></div>
+                <div class="resource-row"><span class="resource-label">Attacks</span><span id="stat-attack"
+                        class="resource-value">0.67/s</span></div>
+                <div class="resource-row"><span class="resource-label">Gold bonus</span><span id="stat-gold-mult"
+                        class="resource-value">×1.00</span></div>
+                <div class="resource-row"><span class="resource-label">Income</span><span id="stat-idle"
+                        class="resource-value">0/s</span></div>
             </div>
             <h2>Skills</h2>
             <div id="skills" class="grid"></div>
+            <details class="settings">
+                <summary>Settings</summary>
+                <input type="checkbox" id="enable-background" />
+                <label for="enable-background">Enable Effects</label>
+                <br />
+                <input type="checkbox" id="enable-daynight" checked />
+                <label for="enable-daynight">Day/Night Cycle</label>
+                <br />
+                <input type="checkbox" id="enable-sound" checked />
+                <label for="enable-sound">Sound</label>
+                <br />
+                <button id="cheat-gold" class="text-button">+500 gold (dev)</button>
+                <br />
+                <button id="new-world" class="text-button">⚠ New World (wipes save)</button>
+            </details>
         </div>
+        <div class="sidebar-background"></div>
         <div class="game">
-            <div id="gameboard" class="grid ">
-                <div id="character-list" class="">
-                    <div id="character-1" class="character sprite" data-grid-y="5" data-grid-x="5" data-move-speed="1"
-                        data-animation-state="idle" data-animation-name="walk-right" data-sprite-sheet="skeleton-walk">
+            <div id="gameboard" class="grid">
+                <div id="terrainList"></div>
+                <div id="character-list">
+                    <div id="character-1" class="character sprite" data-grid-y="16" data-grid-x="16"
+                        data-animation-state="idle" data-animation-name="idle-down" data-sprite-sheet="human">
                     </div>
                 </div>
+                <div id="enemy-list"></div>
             </div>
         </div>
-        <div id="tooltip">
-        </div>
+        <div id="day-night"></div>
+        <div id="banner"></div>
+        <div id="tooltip"></div>
     </div>
-    <script src="animation.js"></script>
-    <script src="game.js" preload></script>
-    <script src="skills.js" preload></script>
-    <script src="character.js" preload></script>
-    <script src="score.js" preload></script>
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/audio.js"></script>
+    <script src="/scripts/perlin-noise.js"></script>
+    <script src="/scripts/config.js"></script>
+    <script src="/scripts/animation.js"></script>
+    <script src="/scripts/world.js"></script>
+    <script src="/scripts/character.js"></script>
+    <script src="/scripts/enemies.js"></script>
+    <script src="/scripts/ui.js"></script>
+    <script src="/scripts/treasure.js"></script>
+    <script src="/scripts/companion.js"></script>
+    <script src="/scripts/quests.js"></script>
+    <script src="/scripts/lpc-sprite-sheet-generator.js"></script>
+    <script src="/scripts/hero-appearance.js"></script>
+    <script src="/scripts/skills.js"></script>
+    <script src="/scripts/game.js"></script>
 
+    <div id="background">
+        <div class="crt"></div>
+        <div class="sky">
+            <div class="gradient-blobs"></div>
+            <div class="gradient-blobs"></div>
+            <div class="gradient-blobs"></div>
+        </div>
+        <div class="grain"></div>
+    </div>
+    <svg width="0" height="0" style="display: none;">
+        <defs>
+            <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.011 0.011" numOctaves="2" seed="92" result="noise">
+                </feTurbulence>
+                <feGaussianBlur in="noise" stdDeviation="2" result="blurred"></feGaussianBlur>
+                <feDisplacementMap in="SourceGraphic" in2="blurred" scale="107" xChannelSelector="R"
+                    yChannelSelector="G">
+                </feDisplacementMap>
+            </filter>
+        </defs>
+    </svg>
 </body>
 
 </html>
